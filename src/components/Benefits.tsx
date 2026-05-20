@@ -50,7 +50,7 @@ function BenefitCard({ icon: Icon, title, description }: Benefit) {
       onMouseLeave={() => setHovered(false)}
       style={{
         background: '#000000',
-        border: `1px solid ${hovered ? '#522959' : '#2A114B'}`,
+        border: `1px solid ${hovered ? '#dface8' : '#2A114B'}`,
         borderRadius: '1rem',
         padding: '2rem',
         transform: hovered ? 'translateY(-4px)' : 'translateY(0)',
@@ -65,7 +65,7 @@ function BenefitCard({ icon: Icon, title, description }: Benefit) {
           width: 'fit-content',
         }}
       >
-        <Icon size={28} color="#522959" />
+        <Icon size={28} color="#dface8" />
       </div>
       <h3
         style={{
@@ -93,14 +93,23 @@ function BenefitCard({ icon: Icon, title, description }: Benefit) {
 
 export default function Benefits() {
   return (
-    <section id="about" style={{ background: '#111111', padding: '7rem 1.5rem', width: '100%' }}>
+    <section
+      id="about"
+      className="section-fade-bottom"
+      style={{
+        background: '#000000',
+        padding: '7rem 1.5rem',
+        width: '100%',
+        position: 'relative',
+      }}
+    >
       <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
         {/* Header */}
-        <div>
+        <div style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto' }}>
           <p
             style={{
-              color: '#522959',
-              fontSize: '0.75rem',
+              color: '#dface8',
+              fontSize: '1.13rem',
               letterSpacing: '0.2em',
               fontWeight: 600,
               textTransform: 'uppercase',
@@ -117,9 +126,7 @@ export default function Benefits() {
               lineHeight: 1.15,
             }}
           >
-            Built for businesses that
-            <br />
-            can't afford to slow down.
+            Built for businesses<br />that can't slow down.
           </h2>
         </div>
 

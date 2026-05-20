@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 interface Stat {
   value: string;
@@ -69,7 +69,7 @@ function Card({ company, industry, quote, stats }: CaseStudy) {
       style={{
         minWidth: '320px',
         background: '#150E1A',
-        border: `1px solid ${hovered ? '#522959' : '#2A114B'}`,
+        border: `1px solid ${hovered ? '#dface8' : '#2A114B'}`,
         borderRadius: '1rem',
         padding: '2rem',
         transition: 'border-color 300ms',
@@ -127,7 +127,7 @@ function Card({ company, industry, quote, stats }: CaseStudy) {
               padding: '0.75rem',
             }}
           >
-            <p style={{ color: '#522959', fontWeight: 700, fontSize: '1.25rem', lineHeight: 1 }}>
+            <p style={{ color: '#dface8', fontWeight: 700, fontSize: '1.25rem', lineHeight: 1 }}>
               {value}
             </p>
             <p style={{ color: '#AAAAAA', fontSize: '0.7rem', marginTop: '0.25rem' }}>
@@ -142,44 +142,44 @@ function Card({ company, industry, quote, stats }: CaseStudy) {
 
 export default function CaseStudies() {
   const trackRef = useRef<HTMLDivElement>(null);
-  const isDragging = useRef(false);
-  const startX = useRef(0);
-  const scrollLeft = useRef(0);
-  const [grabbing, setGrabbing] = useState(false);
+  const animRef = useRef<number>(0);
+  const speed = useRef(0.5);
 
-  function onMouseDown(e: React.MouseEvent) {
-    isDragging.current = true;
-    setGrabbing(true);
-    startX.current = e.pageX - (trackRef.current?.offsetLeft ?? 0);
-    scrollLeft.current = trackRef.current?.scrollLeft ?? 0;
-  }
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+    let pos = 0;
+    const totalWidth = track.scrollWidth / 2;
 
-  function onMouseMove(e: React.MouseEvent) {
-    if (!isDragging.current || !trackRef.current) return;
-    e.preventDefault();
-    const x = e.pageX - trackRef.current.offsetLeft;
-    const walk = (x - startX.current) * 1.2;
-    trackRef.current.scrollLeft = scrollLeft.current - walk;
-  }
+    const tick = () => {
+      pos += speed.current;
+      if (pos >= totalWidth) pos = 0;
+      track.style.transform = `translateX(-${pos}px)`;
+      animRef.current = requestAnimationFrame(tick);
+    };
+    animRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(animRef.current);
+  }, []);
 
-  function onMouseUp() {
-    isDragging.current = false;
-    setGrabbing(false);
-  }
-
-  function onMouseLeave() {
-    isDragging.current = false;
-    setGrabbing(false);
-  }
+  const CARDS = [...CASE_STUDIES, ...CASE_STUDIES];
 
   return (
-    <section id="case-studies" style={{ background: '#000000', padding: '7rem 0', width: '100%' }}>
+    <section
+      id="case-studies"
+      className="section-fade-bottom"
+      style={{
+        background: '#000000',
+        padding: '7rem 0',
+        width: '100%',
+        position: 'relative',
+      }}
+    >
       {/* Header — constrained width */}
-      <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 1.5rem', marginBottom: '3rem' }}>
+      <div style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto', padding: '0 1.5rem', marginBottom: '3rem' }}>
         <p
           style={{
-            color: '#522959',
-            fontSize: '0.7rem',
+            color: '#dface8',
+            fontSize: '1.13rem',
             letterSpacing: '0.2em',
             fontWeight: 600,
             textTransform: 'uppercase',
@@ -196,52 +196,36 @@ export default function CaseStudies() {
             lineHeight: 1.15,
           }}
         >
-          Real results, real businesses.
+          Real results,<br />real businesses.
         </h2>
       </div>
 
-      {/* Draggable carousel — full bleed */}
+      {/* Auto-scrolling carousel */}
       <div
-        ref={trackRef}
-        onMouseDown={onMouseDown}
-        onMouseMove={onMouseMove}
-        onMouseUp={onMouseUp}
-        onMouseLeave={onMouseLeave}
         style={{
-          overflowX: 'hidden',
-          overflowY: 'visible',
-          cursor: grabbing ? 'grabbing' : 'grab',
+          overflow: 'hidden',
+          cursor: 'default',
           paddingLeft: 'max(1.5rem, calc((100vw - 1280px) / 2 + 1.5rem))',
           paddingRight: '1.5rem',
           paddingBottom: '0.5rem',
         }}
       >
         <div
+          ref={trackRef}
+          onMouseEnter={() => { speed.current = 0.1; }}
+          onMouseLeave={() => { speed.current = 0.5; }}
           style={{
             display: 'flex',
             gap: '1.5rem',
             width: 'max-content',
-            userSelect: 'none',
+            willChange: 'transform',
           }}
         >
-          {CASE_STUDIES.map((cs) => (
-            <Card key={cs.company} {...cs} />
+          {CARDS.map((cs, i) => (
+            <Card key={`${cs.company}-${i}`} {...cs} />
           ))}
         </div>
       </div>
-
-      {/* Drag hint */}
-      <p
-        style={{
-          color: '#AAAAAA',
-          fontSize: '0.875rem',
-          textAlign: 'center',
-          marginTop: '1.5rem',
-          opacity: 0.6,
-        }}
-      >
-        ← drag to explore →
-      </p>
     </section>
   );
 }

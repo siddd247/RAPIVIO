@@ -12,8 +12,8 @@ function Tag({
   variant?: 'outline' | 'filled-mauve' | 'filled-violet' | 'filled-dark';
 }) {
   const styles: Record<string, React.CSSProperties> = {
-    outline: { border: '1px solid #522959', color: '#AAAAAA', background: 'transparent' },
-    'filled-mauve': { background: '#522959', color: '#FFFFFF', border: 'none' },
+    outline: { border: '1px solid #dface8', color: '#AAAAAA', background: 'transparent' },
+    'filled-mauve': { background: '#dface8', color: '#FFFFFF', border: 'none' },
     'filled-violet': { background: '#2A114B', color: '#AAAAAA', border: 'none' },
     'filled-dark': { background: '#111111', color: '#AAAAAA', border: 'none' },
   };
@@ -46,7 +46,7 @@ function LeadCaptureCard() {
       onMouseLeave={() => setHovered(false)}
       style={{
         background: 'linear-gradient(135deg, #150E1A 0%, #2A114B 100%)',
-        border: `1px solid ${hovered ? '#AAAAAA' : '#522959'}`,
+        border: `1px solid ${hovered ? '#AAAAAA' : '#dface8'}`,
         borderRadius: '1.5rem',
         padding: '2.5rem',
         transition: 'border-color 300ms',
@@ -127,22 +127,23 @@ function LeadCaptureCard() {
                 borderBottom: '1px solid #111111',
               }}
             >
-              <span style={{ color: '#522959', fontSize: '0.7rem', fontWeight: 500 }}>{label}</span>
+              <span style={{ color: '#dface8', fontSize: '0.7rem', fontWeight: 500 }}>{label}</span>
               <span style={{ color: '#AAAAAA', fontSize: '0.7rem' }}>{value}</span>
             </div>
           ))}
           <div style={{ marginTop: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <span
+              className="live-dot"
               style={{
                 width: '7px',
                 height: '7px',
                 borderRadius: '50%',
-                background: '#522959',
+                background: '#dface8',
                 display: 'inline-block',
-                boxShadow: '0 0 6px #522959',
+                boxShadow: '0 0 6px #dface8',
               }}
             />
-            <span style={{ color: '#522959', fontSize: '0.7rem', fontWeight: 500 }}>
+            <span style={{ color: '#dface8', fontSize: '0.7rem', fontWeight: 500 }}>
               Captured &amp; Synced
             </span>
           </div>
@@ -163,7 +164,7 @@ function FollowUpCard() {
       onMouseLeave={() => setHovered(false)}
       style={{
         background: '#150E1A',
-        border: `1px solid ${hovered ? '#522959' : '#2A114B'}`,
+        border: `1px solid ${hovered ? '#dface8' : '#2A114B'}`,
         borderRadius: '1.5rem',
         padding: '2rem',
         transform: hovered ? 'translateY(-4px)' : 'translateY(0)',
@@ -172,7 +173,7 @@ function FollowUpCard() {
         flexDirection: 'column',
       }}
     >
-      <MessageSquare size={28} color="#522959" style={{ marginBottom: '1.25rem' }} />
+      <MessageSquare size={28} color="#dface8" style={{ marginBottom: '1.25rem' }} />
       <div style={{ marginBottom: '0.75rem' }}>
         <Tag variant="filled-violet">Always On</Tag>
       </div>
@@ -187,7 +188,7 @@ function FollowUpCard() {
         <p style={{ color: '#FFFFFF', fontWeight: 800, fontSize: '2.5rem', lineHeight: 1 }}>
           &lt; 60s
         </p>
-        <p style={{ color: '#522959', fontSize: '0.7rem', letterSpacing: '0.08em', marginTop: '0.35rem', textTransform: 'uppercase' }}>
+        <p style={{ color: '#dface8', fontSize: '0.7rem', letterSpacing: '0.08em', marginTop: '0.35rem', textTransform: 'uppercase' }}>
           average response time
         </p>
       </div>
@@ -257,7 +258,7 @@ function CustomAICard() {
       onMouseLeave={() => setHovered(false)}
       style={{
         background: '#150E1A',
-        border: `1px solid ${hovered ? '#522959' : '#2A114B'}`,
+        border: `1px solid ${hovered ? '#dface8' : '#2A114B'}`,
         borderRadius: '1.5rem',
         padding: '2rem',
         transform: hovered ? 'translateY(-4px)' : 'translateY(0)',
@@ -266,7 +267,7 @@ function CustomAICard() {
         flexDirection: 'column',
       }}
     >
-      <BrainCircuit size={28} color="#522959" style={{ marginBottom: '1.25rem' }} />
+      <BrainCircuit size={28} color="#dface8" style={{ marginBottom: '1.25rem' }} />
       <div style={{ marginBottom: '1rem' }}>
         <Tag variant="filled-dark">Bespoke</Tag>
       </div>
@@ -286,7 +287,7 @@ function CustomAICard() {
             border: 'none',
             padding: 0,
             cursor: 'pointer',
-            color: ctaHovered ? '#AAAAAA' : '#522959',
+            color: ctaHovered ? '#AAAAAA' : '#dface8',
             fontSize: '0.875rem',
             fontWeight: 600,
             transition: 'color 200ms',
@@ -305,15 +306,24 @@ function CustomAICard() {
 ───────────────────────────────────────── */
 export default function Services() {
   return (
-    <section id="services" style={{ width: '100%', background: '#000000', padding: '7rem 1.5rem' }}>
+    <section
+      id="services"
+      className="section-fade-bottom"
+      style={{
+        width: '100%',
+        background: '#000000',
+        padding: '7rem 1.5rem',
+        position: 'relative',
+      }}
+    >
       <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
 
         {/* ─── Header ─── */}
-        <div style={{ marginBottom: '5rem' }}>
+        <div style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto', marginBottom: '5rem' }}>
           <p
             style={{
-              color: '#522959',
-              fontSize: '0.7rem',
+              color: '#dface8',
+              fontSize: '1.13rem',
               letterSpacing: '0.2em',
               fontWeight: 600,
               textTransform: 'uppercase',
@@ -331,9 +341,7 @@ export default function Services() {
               letterSpacing: '-0.02em',
             }}
           >
-            AI that works while
-            <br />
-            you sleep.
+            AI that works<br />while you sleep.
           </h2>
           <p
             style={{

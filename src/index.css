@@ -8,7 +8,7 @@
 :root {
   --color-blush: #FFFFFF;
   --color-dusty-rose: #AAAAAA;
-  --color-mauve: #522959;
+  --color-mauve: #dface8;
   --color-deep-purple: #2A114B;
   --color-dark-violet: #111111;
   --color-near-black: #000000;
@@ -20,36 +20,63 @@
 .btn-primary {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   border-radius: 9999px;
-  padding: 10px 20px;
+  padding: 12px 28px;
   font-size: 0.875rem;
   font-weight: 600;
   color: #ffffff;
-  background: #522959;
+  background: #824D69;
   border: none;
-  transition: all 0.3s;
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.15s ease, background 0.3s ease;
 }
-.btn-primary:hover { background: #2A114B; }
-.btn-primary:active { transform: scale(0.97); }
+.btn-primary:hover {
+  background: #9d6080;
+  transform: translateY(-2px) scale(1.03);
+}
+.btn-primary:active {
+  transform: translateY(0) scale(0.97);
+}
 
 .btn-outline {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   border-radius: 9999px;
-  padding: 10px 20px;
+  padding: 12px 28px;
   font-size: 0.875rem;
   font-weight: 600;
   color: #AAAAAA;
   background: transparent;
-  border: 1.5px solid #522959;
-  transition: all 0.3s;
+  border: 1.5px solid rgba(223,172,232,0.4);
   cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, color 0.3s ease, border-color 0.3s ease;
 }
-.btn-outline:hover { color: #ffffff; border-color: #ffffff; }
-.btn-outline:active { transform: scale(0.97); }
+.btn-outline::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(223,172,232,0.08), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+.btn-outline:hover {
+  color: #ffffff;
+  border-color: #dface8;
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 8px 24px rgba(223,172,232,0.1);
+}
+.btn-outline:hover::before { opacity: 1; }
+.btn-outline:active {
+  transform: translateY(0) scale(0.97);
+}
 
 .badge-pill {
   display: inline-flex;
@@ -60,7 +87,7 @@
   font-weight: 500;
   color: #FFFFFF;
   background: transparent;
-  border: 1.5px solid #522959;
+  border: 1.5px solid #dface8;
 }
 
 * {
@@ -79,7 +106,80 @@ body {
 
 .mauve-gradient-border {
   background: linear-gradient(#000, #000) padding-box,
-              linear-gradient(135deg, #522959, #2A114B) border-box;
+              linear-gradient(135deg, #dface8, #2A114B) border-box;
   border: 1.5px solid transparent;
 }
 
+.section-fade-bottom::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(204,204,204,0.15) 0%, rgba(0,0,0,0) 100%);
+  width: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes pulse-glow {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(223, 172, 232, 0.7);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.15);
+    box-shadow: 0 0 10px 3px rgba(223, 172, 232, 0.5);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(223, 172, 232, 0);
+    opacity: 0.7;
+  }
+}
+
+.live-dot {
+  animation: pulse-glow 2s infinite ease-in-out;
+}
+
+.btn-primary .btn-text {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0px;
+  transition: gap 500ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.btn-primary:hover .btn-text {
+  gap: 10px;
+}
+
+.btn-primary .btn-label {
+  transform: translateX(0px);
+  transition: transform 500ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.btn-primary:hover .btn-label {
+  transform: translateX(-5px);
+}
+
+.btn-primary .btn-icon {
+  display: inline-flex;
+  align-items: center;
+  opacity: 0;
+  width: 0px;
+  overflow: hidden;
+  transform: translateX(12px);
+  transition: opacity 600ms cubic-bezier(0.16, 1, 0.3, 1),
+              transform 600ms cubic-bezier(0.16, 1, 0.3, 1),
+              width 600ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-primary:hover .btn-icon {
+  opacity: 1;
+  width: 22px;
+  transform: translateX(0px);
+}

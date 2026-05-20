@@ -41,14 +41,22 @@ export default function FAQ() {
   };
 
   return (
-    <section style={{ background: '#000000', padding: '7rem 1.5rem', width: '100%' }}>
+    <section
+      className="section-fade-bottom"
+      style={{
+        background: '#000000',
+        padding: '7rem 1.5rem',
+        width: '100%',
+        position: 'relative',
+      }}
+    >
       <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
         {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
+        <div style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto', marginBottom: '4rem' }}>
           <p
             style={{
-              color: '#522959',
-              fontSize: '0.75rem',
+              color: '#dface8',
+              fontSize: '1.13rem',
               letterSpacing: '0.2em',
               fontWeight: 600,
               textTransform: 'uppercase',
@@ -91,7 +99,7 @@ export default function FAQ() {
                   </h3>
                   <ChevronDown
                     size={20}
-                    color="#522959"
+                    color="#dface8"
                     style={{
                       transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
                       transition: 'transform 300ms',

@@ -104,7 +104,7 @@ export default function BookingPage() {
       {/* Progress Bar */}
       <div className="fixed bottom-0 left-0 w-full h-[2px] bg-[rgba(255,255,255,0.1)] z-50">
         <motion.div
-          className="h-full bg-[#522959]"
+          className="h-full bg-[#dface8]"
           initial={{ width: 0 }}
           animate={{ width: `${progressPercentage}%` }}
           transition={{ duration: 0.3, ease: 'easeOut' }}
@@ -112,7 +112,7 @@ export default function BookingPage() {
       </div>
 
       {/* Main Content Area */}
-      <div className="min-h-screen w-full px-6 relative">
+      <div className="w-[100vw] min-h-[100vh] flex flex-col items-center justify-center bg-[#000000] px-[24px]">
         <AnimatePresence mode="wait">
           {isSuccessScreen ? (
             <motion.div
@@ -121,18 +121,27 @@ export default function BookingPage() {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: -40, opacity: 0 }}
               transition={{ duration: 0.3, ease: 'easeInOut' }}
-              className="flex flex-col items-center text-center w-full absolute"
-              style={{ top: '25vh', left: '50%', transform: 'translateX(-50%)' }}
+              className="w-full max-w-[480px] mx-auto text-center flex flex-col items-center"
             >
               <motion.div
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: 0.2, type: 'spring' }}
               >
-                <CheckCircle2 size={80} color="#522959" strokeWidth={1.5} className="mb-6" />
+                <CheckCircle2 size={80} color="#dface8" strokeWidth={1.5} style={{ marginBottom: '32px' }} />
               </motion.div>
-              <h2 className="text-[#FFFFFF] text-4xl font-bold mb-3">You're all set!</h2>
-              <p className="text-[rgba(255,255,255,0.5)] text-lg mb-10">We'll reach out within 24 hours</p>
+              <motion.h2
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.3, type: 'spring', stiffness: 200 }}
+                style={{ color: '#FFFFFF', fontSize: '2.5rem', fontWeight: 700, marginBottom: '12px', display: 'block', textAlign: 'center' }}
+              >You're all set!</motion.h2>
+              <motion.p
+                initial={{ y: 10, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.5, duration: 0.4 }}
+                style={{ color: 'rgba(255,255,255,0.5)', fontSize: '1.1rem', marginTop: '16px', marginBottom: '48px', textAlign: 'center' }}
+              >We'll reach out within 24 hours</motion.p>
               <button
                 onClick={() => navigate('/')}
                 className="btn-primary"
@@ -147,15 +156,14 @@ export default function BookingPage() {
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: -40, opacity: 0 }}
               transition={{ duration: 0.3, ease: 'easeInOut' }}
-              className="w-full max-w-md mx-auto absolute"
-              style={{ top: '25vh', left: '50%', transform: 'translateX(-50%)' }}
+              className="w-full max-w-[480px] mx-auto text-center"
             >
-              <h2 className="text-[#FFFFFF] text-4xl font-bold text-center">{steps[currentStep].label}</h2>
-              <p className="text-[rgba(255,255,255,0.4)] text-base mt-[24px] text-center">
+              <h2 style={{ color: '#FFFFFF', fontSize: 'clamp(1.6rem, 5vw, 2.4rem)', fontWeight: 700, textAlign: 'center', whiteSpace: 'nowrap' }}>{steps[currentStep].label}</h2>
+              <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: '1rem', marginTop: '20px', textAlign: 'center' }}>
                 {steps[currentStep].subtext}
               </p>
 
-              <div className="w-full max-w-md mx-auto mt-[48px]">
+              <div style={{ width: '100%', maxWidth: '480px', margin: '56px auto 0' }}>
                 {steps[currentStep].type === 'textarea' ? (
                   <textarea
                     ref={inputRef as React.RefObject<HTMLTextAreaElement>}
@@ -163,8 +171,8 @@ export default function BookingPage() {
                     value={formData[steps[currentStep].id as keyof typeof formData]}
                     onChange={handleChange}
                     onKeyDown={handleKeyDown}
-                    rows={3}
-                    className="w-full bg-transparent border-b border-white/20 focus:border-[#522959] outline-none text-white text-2xl py-3 text-center resize-none transition-colors"
+                    rows={1}
+                    className="w-full bg-transparent border-b border-white/20 focus:border-[#dface8] outline-none text-white text-2xl text-center resize-none transition-colors" style={{ padding: '0 0 8px 0', lineHeight: '1.5', verticalAlign: 'bottom' }}
                   />
                 ) : (
                   <input
@@ -174,12 +182,12 @@ export default function BookingPage() {
                     value={formData[steps[currentStep].id as keyof typeof formData]}
                     onChange={handleChange}
                     onKeyDown={handleKeyDown}
-                    className="w-full bg-transparent border-b border-white/20 focus:border-[#522959] outline-none text-white text-2xl py-3 text-center transition-colors"
+                    className="w-full bg-transparent border-b border-white/20 focus:border-[#dface8] outline-none text-white text-2xl py-3 text-center transition-colors"
                   />
                 )}
-                
+
                 {/* Continue button within input context */}
-                <div className="flex justify-center items-center gap-12 mt-[48px]">
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '3rem', marginTop: '56px' }}>
                   {steps[currentStep].id === 'phone' && (
                     <button
                       onClick={handleNext}

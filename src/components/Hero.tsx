@@ -3,7 +3,7 @@ import { ChevronDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const ShaderBackground = lazy(() =>
-  import('shaders/react').then(({ Shader, Swirl, ChromaFlow, FlutedGlass, FilmGrain }) => ({
+  import('shaders/react').then(({ Shader, Swirl, ChromaFlow, FlutedGlass, FilmGrain: _FilmGrain }) => ({
     default: () => (
       <Shader style={{ width: '100%', height: '100%' }} disableTelemetry>
         <Swirl
@@ -32,7 +32,6 @@ const ShaderBackground = lazy(() =>
           softness={1}
           speed={0.15}
         />
-        <FilmGrain strength={0.05} />
       </Shader>
     )
   }))
@@ -89,8 +88,11 @@ export default function Hero() {
   return (
     <section
       id="hero"
-      className="relative overflow-hidden min-h-screen"
-      style={{ background: '#000000' }}
+      className="section-fade-bottom relative overflow-hidden min-h-screen"
+      style={{
+        background: '#000000',
+        position: 'relative',
+      }}
     >
       {/* ─── Shader background layer ─── */}
       <div
@@ -108,38 +110,45 @@ export default function Hero() {
 
       {/* ─── Content layer ─── */}
       <div
-        className="relative flex flex-col items-center justify-center min-h-screen text-center px-6"
-        style={{ zIndex: 20 }}
+        className="relative flex flex-col items-center text-center px-6 w-full"
+        style={{ zIndex: 20, minHeight: '100vh', paddingTop: '160px', paddingBottom: '80px' }}
       >
-        {/* Badge */}
         <span className="badge-pill">AI Automation Agency</span>
 
-        {/* Headline */}
         <h1
           className="font-bold leading-[1.1] tracking-tight"
-          style={{ fontSize: 'clamp(2.2rem, 6vw, 4.5rem)' }}
+          style={{ fontSize: 'clamp(2.2rem, 6vw, 4.5rem)', marginTop: '72px' }}
         >
-          <span style={{ color: '#FFFFFF', display: 'block' }}>
-            Capture More Leads.
-          </span>
-          <span style={{ color: '#522959', display: 'block' }}>
-            Convert Them Automatically.
-          </span>
+          <span style={{ color: '#FFFFFF', display: 'block' }}>Capture More Leads.</span>
+          <span style={{ color: '#dface8', display: 'block' }}>Convert Them Automatically.</span>
         </h1>
 
-        {/* Subtext */}
-        <p
-          className="text-base mt-4 max-w-xl mx-auto leading-relaxed"
-          style={{ color: 'rgba(255, 255, 255, 0.6)' }}
-        >
-          Rapivio uses AI to capture leads and follow up instantly — so you
-          never miss a potential client.
+        <p className="text-base max-w-xl mx-auto leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)', marginTop: '28px' }}>
+          Rapivio uses AI to capture leads and follow up instantly — so you never miss a potential client.
         </p>
 
-        {/* CTA buttons */}
-        <div className="mt-8 flex gap-4 justify-center flex-wrap">
-          <Link to="/book" className="btn-primary">Book a Call</Link>
-          <a href="#services" onClick={(e)=>{e.preventDefault();document.querySelector('#services')?.scrollIntoView({behavior:'smooth'})}} className="btn-outline">View Services</a>
+        <div style={{ marginTop: '56px' }} className="flex gap-4 justify-center flex-wrap">
+          <Link to="/book" className="btn-primary" style={{ fontSize: '1.05rem' }}>
+            <span className="btn-text">
+              <span className="btn-label">Book a Call</span>
+              <span className="btn-icon">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384" />
+                </svg>
+              </span>
+            </span>
+          </Link>
+          <a href="#services" onClick={(e)=>{e.preventDefault();document.querySelector('#services')?.scrollIntoView({behavior:'smooth'})}} className="btn-outline" style={{ fontSize: '1.05rem', padding: '12px 24px' }}>View Services</a>
         </div>
       </div>
 
@@ -148,11 +157,25 @@ export default function Hero() {
         className="absolute bottom-8 left-1/2"
         style={{ transform: 'translateX(-50%)', zIndex: 20 }}
       >
-        <ChevronDown
-          size={28}
-          color="#522959"
-          style={{ animation: 'bounce 2s infinite' }}
-        />
+        <button
+          onClick={() => document.querySelector('#services')?.scrollIntoView({ behavior: 'smooth' })}
+          style={{
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: '8px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          aria-label="Scroll to services"
+        >
+          <ChevronDown
+            size={28}
+            color="#dface8"
+            style={{ animation: 'bounce 2s infinite' }}
+          />
+        </button>
       </div>
 
       {/* Bounce keyframes injected inline */}

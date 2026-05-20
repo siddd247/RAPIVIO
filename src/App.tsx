@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import './index.css'
 import { Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
@@ -29,6 +30,21 @@ function HomePage() {
 }
 
 function App() {
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const btns = document.querySelectorAll('.btn-primary, .btn-outline');
+      btns.forEach((btn) => {
+        const rect = (btn as HTMLElement).getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        (btn as HTMLElement).style.setProperty('--x', `${x}%`);
+        (btn as HTMLElement).style.setProperty('--y', `${y}%`);
+      });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
   return (
     <div style={{ background: '#000000' }}>
       <Navbar />

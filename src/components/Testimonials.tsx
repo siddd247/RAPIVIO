@@ -38,7 +38,7 @@ function TestimonialCard({ quote, name, role }: Testimonial) {
       onMouseLeave={() => setHovered(false)}
       style={{
         background: '#000000',
-        border: `1px solid ${hovered ? '#522959' : '#2A114B'}`,
+        border: `1px solid ${hovered ? '#dface8' : '#2A114B'}`,
         borderRadius: '1rem',
         padding: '2rem',
         transition: 'border-color 300ms',
@@ -46,7 +46,7 @@ function TestimonialCard({ quote, name, role }: Testimonial) {
     >
       <div
         style={{
-          color: '#522959',
+          color: '#dface8',
           fontSize: '3rem',
           fontWeight: 700,
           lineHeight: 1,
@@ -91,14 +91,22 @@ function TestimonialCard({ quote, name, role }: Testimonial) {
 
 export default function Testimonials() {
   return (
-    <section style={{ background: '#111111', padding: '7rem 1.5rem', width: '100%' }}>
+    <section
+      className="section-fade-bottom"
+      style={{
+        background: '#000000',
+        padding: '7rem 1.5rem',
+        width: '100%',
+        position: 'relative',
+      }}
+    >
       <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
         {/* Header */}
-        <div>
+        <div style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto' }}>
           <p
             style={{
-              color: '#522959',
-              fontSize: '0.75rem',
+              color: '#dface8',
+              fontSize: '1.13rem',
               letterSpacing: '0.2em',
               fontWeight: 600,
               textTransform: 'uppercase',

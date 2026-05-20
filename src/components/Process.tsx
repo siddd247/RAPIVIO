@@ -49,7 +49,7 @@ function StepCard({ number, title, description, icon: Icon }: Step) {
       onMouseLeave={() => setHovered(false)}
       style={{
         background: '#000000',
-        border: `1px solid ${hovered ? '#522959' : '#2A114B'}`,
+        border: `1px solid ${hovered ? '#dface8' : '#2A114B'}`,
         borderRadius: '1rem',
         padding: '2rem',
         transform: hovered ? 'translateY(-4px)' : 'translateY(0)',
@@ -61,7 +61,7 @@ function StepCard({ number, title, description, icon: Icon }: Step) {
       {/* Step number */}
       <span
         style={{
-          color: '#522959',
+          color: '#dface8',
           fontWeight: 700,
           fontSize: '3rem',
           lineHeight: 1,
@@ -97,7 +97,7 @@ function StepCard({ number, title, description, icon: Icon }: Step) {
 
       {/* Decorative icon */}
       <div style={{ marginTop: '1.5rem' }}>
-        <Icon size={20} color="#522959" />
+        <Icon size={20} color="#dface8" />
       </div>
     </div>
   );
@@ -107,15 +107,21 @@ export default function Process() {
   return (
     <section
       id="process"
-      style={{ background: '#111111', padding: '7rem 1.5rem', width: '100%' }}
+      className="section-fade-bottom"
+      style={{
+        background: '#000000',
+        padding: '7rem 1.5rem',
+        width: '100%',
+        position: 'relative',
+      }}
     >
       <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
         {/* Header */}
-        <div>
+        <div style={{ textAlign: 'center', maxWidth: '800px', margin: '0 auto' }}>
           <p
             style={{
-              color: '#522959',
-              fontSize: '0.75rem',
+              color: '#dface8',
+              fontSize: '1.13rem',
               letterSpacing: '0.2em',
               fontWeight: 600,
               textTransform: 'uppercase',
@@ -128,13 +134,12 @@ export default function Process() {
             style={{
               color: '#FFFFFF',
               fontWeight: 800,
-              fontSize: 'clamp(2.5rem, 5vw, 3.5rem)',
+              fontSize: 'clamp(1.3rem, 6.2vw, 3.5rem)',
               lineHeight: 1.15,
             }}
           >
-            From idea to automation
-            <br />
-            in four steps.
+            <span style={{ display: 'block', whiteSpace: 'nowrap' }}>From idea to automation</span>
+            <span style={{ display: 'block', whiteSpace: 'nowrap' }}>in four steps.</span>
           </h2>
         </div>
 

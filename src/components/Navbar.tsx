@@ -3,14 +3,23 @@ import { motion } from 'framer-motion';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Home, User, Briefcase, GitBranch, BookOpen, Mail, ChevronDown } from 'lucide-react';
 
-const NAV_ITEMS = [
-  { text: 'Home', href: '#hero', id: 'hero', icon: Home },
-  { text: 'About', href: '#about', id: 'about', icon: User },
-  { text: 'Services', href: '#services', id: 'services', icon: Briefcase },
-  { text: 'Process', href: '#process', id: 'process', icon: GitBranch },
-  { text: 'Case Studies', href: '#case-studies', id: 'case-studies', icon: BookOpen },
-  { text: 'Contact', href: '#contact', id: 'contact', icon: Mail },
+const NAV_LINKS = [
+  { text: 'Home', href: '#hero' },
+  { text: 'Services', href: '#services' },
+  { text: 'Process', href: '#process' },
+  { text: 'Case Studies', href: '#case-studies' },
+  { text: 'About', href: '#about' },
+  { text: 'Contact', href: '#contact' },
 ];
+
+const ICON_MAP: Record<string, React.ComponentType<any>> = {
+  'Home': Home,
+  'About': User,
+  'Services': Briefcase,
+  'Process': GitBranch,
+  'Case Studies': BookOpen,
+  'Contact': Mail
+};
 
 export default function Navbar() {
   const location = useLocation();
@@ -120,8 +129,8 @@ export default function Navbar() {
 
         {/* Desktop Nav Links */}
         <nav className="hidden md:flex items-center gap-10">
-          {NAV_ITEMS.map((item) => {
-            const isActive = activeSection === item.id;
+          {NAV_LINKS.map((item) => {
+            const isActive = activeSection === item.href.replace('#', '');
             return (
               <motion.a
                 key={item.text}
@@ -145,7 +154,20 @@ export default function Navbar() {
         {/* Right CTA / Mobile Toggle */}
         <div className="flex items-center gap-4 mr-2">
           {/* Desktop CTA */}
-          <button onClick={() => navigate('/book')} className="hidden md:inline-flex btn-primary">Book a Call</button>
+          <button
+            onClick={() => navigate('/book')}
+            className="hidden md:inline-flex btn-primary navbar-cta"
+            style={{ minWidth: '138px' }}
+          >
+            <span className="btn-text">
+              <span className="btn-label">Book a Call</span>
+              <span className="btn-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384" />
+                </svg>
+              </span>
+            </span>
+          </button>
 
           {/* Mobile Toggle Button */}
           <button
@@ -175,9 +197,9 @@ export default function Navbar() {
         className="fixed top-[76px] left-1/2 -translate-x-1/2 w-[92%] max-w-4xl z-40 bg-black/60 border border-[#FFFFFF]/10 backdrop-blur-xl rounded-2xl px-4 py-3 md:hidden"
       >
         <div className="grid grid-cols-3 gap-3 text-center">
-          {NAV_ITEMS.map((item) => {
-            const IconComponent = item.icon;
-            const isActive = activeSection === item.id;
+          {NAV_LINKS.map((item) => {
+            const IconComponent = ICON_MAP[item.text] || Home;
+            const isActive = activeSection === item.href.replace('#', '');
             return (
               <motion.a
                 key={item.text}
