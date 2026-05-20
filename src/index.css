@@ -1,0 +1,85 @@
+@import "tailwindcss";
+
+@theme {
+  --color-light-text: #FFFFFF;
+  --color-dark-text: #FFFFFF;
+}
+
+:root {
+  --color-blush: #FFFFFF;
+  --color-dusty-rose: #AAAAAA;
+  --color-mauve: #522959;
+  --color-deep-purple: #2A114B;
+  --color-dark-violet: #111111;
+  --color-near-black: #000000;
+  --color-deeper-black: #0d000d;
+  
+  --bg-color: #000000;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 9999px;
+  padding: 10px 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #ffffff;
+  background: #522959;
+  border: none;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.btn-primary:hover { background: #2A114B; }
+.btn-primary:active { transform: scale(0.97); }
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 9999px;
+  padding: 10px 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #AAAAAA;
+  background: transparent;
+  border: 1.5px solid #522959;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.btn-outline:hover { color: #ffffff; border-color: #ffffff; }
+.btn-outline:active { transform: scale(0.97); }
+
+.badge-pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  padding: 6px 16px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #FFFFFF;
+  background: transparent;
+  border: 1.5px solid #522959;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background-color: #000000;
+  color: #FFFFFF;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.mauve-gradient-border {
+  background: linear-gradient(#000, #000) padding-box,
+              linear-gradient(135deg, #522959, #2A114B) border-box;
+  border: 1.5px solid transparent;
+}
+

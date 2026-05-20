@@ -1,0 +1,13 @@
+diff --git a/node_modules/shaders/dist/core/index.js b/node_modules/shaders/dist/core/index.js
+index fed0782..ae5e232 100644
+--- a/node_modules/shaders/dist/core/index.js
++++ b/node_modules/shaders/dist/core/index.js
+@@ -898,7 +898,7 @@ function shaderRenderer() {
+ 	const handleVisibilityChange = (entries) => {
+ 		const entry = entries[0];
+ 		if (!entry) return;
+-		isVisible = entry.isIntersecting;
++		if (entry.isIntersecting) isVisible = true; // never set false — keep rendering even when window blurs
+ 	};
+ 	const setsAreEqual = (set1, set2) => {
+ 		if (set1.size !== set2.size) return false;
