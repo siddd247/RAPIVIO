@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { CardSpotlight } from './ui/card-spotlight';
 import type { LucideIcon } from 'lucide-react';
 import { Search, Cpu, Plug, TrendingUp } from 'lucide-react';
 
@@ -41,19 +41,16 @@ const STEPS: Step[] = [
 ];
 
 function StepCard({ number, title, description, icon: Icon }: Step) {
-  const [hovered, setHovered] = useState(false);
-
   return (
-    <div
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+    <CardSpotlight
+      className="h-full"
+      color="#1a0a2e"
+      radius={300}
       style={{
         background: '#000000',
-        border: `1px solid ${hovered ? '#dface8' : '#2A114B'}`,
+        border: `1px solid #2A114B`,
         borderRadius: '1rem',
         padding: '2rem',
-        transform: hovered ? 'translateY(-4px)' : 'translateY(0)',
-        transition: 'border-color 300ms, transform 300ms',
         display: 'flex',
         flexDirection: 'column',
       }}
@@ -99,7 +96,7 @@ function StepCard({ number, title, description, icon: Icon }: Step) {
       <div style={{ marginTop: '1.5rem' }}>
         <Icon size={20} color="#dface8" />
       </div>
-    </div>
+    </CardSpotlight>
   );
 }
 

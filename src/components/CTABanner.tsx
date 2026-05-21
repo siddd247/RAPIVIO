@@ -1,9 +1,6 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function CTABanner() {
-  const [hovered, setHovered] = useState(false);
-
   return (
     <section
       id="contact"
@@ -52,23 +49,18 @@ export default function CTABanner() {
 
         <Link
           to="/book"
-          onMouseEnter={() => setHovered(true)}
-          onMouseLeave={() => setHovered(false)}
-          className="font-semibold text-base transition-all duration-300"
+          className="btn-primary"
           style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '8px',
-            background: hovered ? '#dface8' : '#824D69',
-            color: '#FFFFFF',
-            padding: '1rem 2rem',
-            borderRadius: '9999px',
             marginTop: '2rem',
             textDecoration: 'none',
           }}
         >
-          Book a Free Call
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/></svg>
+          <span className="btn-text">
+            <span className="btn-label">Book a Free Call</span>
+            <span className="btn-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/></svg>
+            </span>
+          </span>
         </Link>
       </div>
     </section>

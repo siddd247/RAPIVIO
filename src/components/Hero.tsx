@@ -1,5 +1,6 @@
 import { lazy, Suspense, useEffect } from 'react';
 import { ChevronDown } from 'lucide-react';
+import { FlipWords } from './ui/flip-words';
 import { Link } from 'react-router-dom';
 
 const ShaderBackground = lazy(() =>
@@ -119,8 +120,12 @@ export default function Hero() {
           className="font-bold leading-[1.1] tracking-tight"
           style={{ fontSize: 'clamp(2.2rem, 6vw, 4.5rem)', marginTop: '72px' }}
         >
-          <span style={{ color: '#FFFFFF', display: 'block' }}>Capture More Leads.</span>
-          <span style={{ color: '#dface8', display: 'block' }}>Convert Them Automatically.</span>
+          <span style={{ color: '#FFFFFF', display: 'block' }}>
+            <span style={{ display: 'inline-flex', alignItems: 'baseline' }}>
+              Capture More <span style={{ marginLeft: '0.25em', display: 'inline-grid', minWidth: '5ch', lineHeight: 'inherit', fontSize: 'inherit', verticalAlign: 'middle' }}><FlipWords words={['Leads.', 'Clients.', 'Deals.']} duration={2500} className="text-[#dface8]" /></span>
+            </span>
+          </span>
+          <span style={{ color: '#FFFFFF', display: 'block' }}>Convert Them <span style={{ color: '#dface8' }}>Automatically.</span></span>
         </h1>
 
         <p className="text-base max-w-xl mx-auto leading-relaxed" style={{ color: 'rgba(255,255,255,0.6)', marginTop: '28px' }}>

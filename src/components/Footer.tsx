@@ -1,5 +1,6 @@
 import { Mail } from 'lucide-react';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const InstagramIcon = ({ color, style }: { color?: string; style?: React.CSSProperties }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={color || 'currentColor'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={style}><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
@@ -69,6 +70,27 @@ function FooterLink({ text, href }: { text: string; href: string }) {
   );
 }
 
+function FooterLegalLink({ text, to }: { text: string; to: string }) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <Link
+      to={to}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        color: hovered ? '#FFFFFF' : '#AAAAAA',
+        fontSize: '0.875rem',
+        display: 'block',
+        marginBottom: '0.5rem',
+        transition: 'color 300ms',
+        textDecoration: 'none',
+      }}
+    >
+      {text}
+    </Link>
+  );
+}
+
 export default function Footer() {
   return (
     <footer
@@ -82,27 +104,13 @@ export default function Footer() {
     >
       <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 1.5rem' }}>
         {/* Top section grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
-          {/* Col 1 */}
-          <div>
-            <p
-              style={{
-                color: '#FFFFFF',
-                fontWeight: 700,
-                fontSize: '1.5rem',
-                margin: 0,
-              }}
-            >
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-10">
+          {/* Col 1 — Brand */}
+          <div className="md:col-span-2">
+            <p style={{ color: '#FFFFFF', fontWeight: 700, fontSize: '1.5rem', margin: 0 }}>
               Rapivio
             </p>
-            <p
-              style={{
-                color: '#AAAAAA',
-                fontSize: '0.875rem',
-                marginTop: '0.5rem',
-                lineHeight: 1.7,
-              }}
-            >
+            <p style={{ color: '#AAAAAA', fontSize: '0.875rem', marginTop: '0.5rem', lineHeight: 1.7 }}>
               AI automation for service businesses that want to grow.
             </p>
             <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.25rem', alignItems: 'center' }}>
@@ -113,16 +121,9 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Col 2 */}
+          {/* Col 2 — Services */}
           <div>
-            <h4
-              style={{
-                color: '#FFFFFF',
-                fontWeight: 600,
-                fontSize: '0.875rem',
-                marginBottom: '1rem',
-              }}
-            >
+            <h4 style={{ color: '#FFFFFF', fontWeight: 600, fontSize: '0.875rem', marginBottom: '1rem' }}>
               Services
             </h4>
             <FooterLink text="AI Lead Capture" href="#services" />
@@ -131,84 +132,25 @@ export default function Footer() {
             <FooterLink text="Custom AI Projects" href="#services" />
           </div>
 
-          {/* Col 3 */}
+          {/* Col 3 — Legal */}
           <div>
-            <h4
-              style={{
-                color: '#FFFFFF',
-                fontWeight: 600,
-                fontSize: '0.875rem',
-                marginBottom: '1rem',
-              }}
-            >
+            <h4 style={{ color: '#FFFFFF', fontWeight: 600, fontSize: '0.875rem', marginBottom: '1rem' }}>
+              Legal
+            </h4>
+            <FooterLegalLink text="Privacy Policy" to="/privacy" />
+            <FooterLegalLink text="Terms of Service" to="/terms" />
+            <FooterLegalLink text="Cookie Policy" to="/cookies" />
+          </div>
+
+          {/* Col 4 — Socials */}
+          <div>
+            <h4 style={{ color: '#FFFFFF', fontWeight: 600, fontSize: '0.875rem', marginBottom: '1rem' }}>
               Socials
             </h4>
             <FooterLink text="Instagram" href="#" />
             <FooterLink text="X (Twitter)" href="#" />
             <FooterLink text="YouTube" href="#" />
             <FooterLink text="Email" href="#" />
-          </div>
-
-          {/* Col 4 */}
-          <div>
-            <h4
-              style={{
-                color: '#FFFFFF',
-                fontWeight: 600,
-                fontSize: '0.875rem',
-                marginBottom: '1rem',
-              }}
-            >
-              Stay Updated
-            </h4>
-            <p
-              style={{
-                color: '#AAAAAA',
-                fontSize: '0.875rem',
-                marginBottom: '0.75rem',
-              }}
-            >
-              Get automation tips and case studies.
-            </p>
-            <input
-              type="email"
-              placeholder="Your email address"
-              style={{
-                background: '#111111',
-                border: '1px solid #2A114B',
-                color: '#FFFFFF',
-                borderRadius: '9999px',
-                padding: '0.5rem 1rem',
-                fontSize: '0.875rem',
-                width: '100%',
-                outline: 'none',
-                transition: 'border-color 200ms',
-              }}
-              onFocus={(e) => (e.target.style.borderColor = '#dface8')}
-              onBlur={(e) => (e.target.style.borderColor = '#2A114B')}
-            />
-            <button
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.background = '#dface8')
-              }
-              onMouseLeave={(e) =>
-                (e.currentTarget.style.background = '#824D69')
-              }
-              style={{
-                background: '#824D69',
-                color: '#FFFFFF',
-                borderRadius: '9999px',
-                padding: '0.5rem 1rem',
-                fontSize: '0.875rem',
-                width: '100%',
-                marginTop: '0.5rem',
-                border: 'none',
-                cursor: 'pointer',
-                transition: 'background 300ms',
-              }}
-            >
-              Subscribe
-            </button>
           </div>
         </div>
 

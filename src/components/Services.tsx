@@ -308,7 +308,7 @@ export default function Services() {
   return (
     <section
       id="services"
-      className="section-fade-bottom"
+      className="section-fade-bottom section-fade-top"
       style={{
         width: '100%',
         background: '#000000',

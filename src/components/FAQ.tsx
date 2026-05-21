@@ -102,23 +102,44 @@ export default function FAQ() {
                     color="#dface8"
                     style={{
                       transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                      transition: 'transform 300ms',
+                      transition: 'transform 260ms cubic-bezier(0.4, 0, 0.2, 1)',
+                      flexShrink: 0,
                     }}
                   />
                 </div>
-                {isOpen && (
-                  <p
-                    style={{
-                      color: '#AAAAAA',
-                      fontSize: '0.875rem',
-                      lineHeight: 1.7,
-                      marginTop: '0.75rem',
-                      marginBottom: 0,
-                    }}
-                  >
-                    {faq.answer}
-                  </p>
-                )}
+
+                {/* Liquid expand wrapper */}
+                <div
+                  style={{
+                    display: 'grid',
+                    gridTemplateRows: isOpen ? '1fr' : '0fr',
+                    transition: 'grid-template-rows 260ms cubic-bezier(0.4, 0, 0.2, 1)',
+                  }}
+                >
+                  <div style={{ overflow: 'hidden' }}>
+                    <div
+                      style={{
+                        opacity: isOpen ? 1 : 0,
+                        transform: isOpen ? 'translateY(0px)' : 'translateY(-6px)',
+                        transition: isOpen
+                          ? 'opacity 220ms ease 60ms, transform 220ms ease 60ms'
+                          : 'opacity 150ms ease, transform 150ms ease',
+                      }}
+                    >
+                      <p
+                        style={{
+                          color: '#AAAAAA',
+                          fontSize: '0.875rem',
+                          lineHeight: 1.7,
+                          marginTop: '0.75rem',
+                          marginBottom: 0,
+                        }}
+                      >
+                        {faq.answer}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               </div>
             );
           })}

@@ -139,7 +139,16 @@ export default function Navbar() {
                 whileTap={{ scale: 1.05 }}
                 onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
                   e.preventDefault();
-                  document.querySelector(item.href)?.scrollIntoView({ behavior: 'smooth' });
+                  const target = item.href; // e.g. "#services"
+                  const el = document.querySelector(target);
+                  if (el) {
+                    // Already on home page — just smooth scroll
+                    el.scrollIntoView({ behavior: 'smooth' });
+                  } else {
+                    // On a different page — navigate home then scroll after mount
+                    sessionStorage.setItem('scrollTarget', target);
+                    window.location.href = '/';
+                  }
                 }}
                 className={`text-base font-medium transition-colors duration-200 ${
                   isActive ? 'text-[#FFFFFF]' : 'text-[rgba(255,255,255,0.6)] hover:text-[#FFFFFF]'
@@ -208,7 +217,16 @@ export default function Navbar() {
                 onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
                   e.preventDefault();
                   setDockOpen(false);
-                  document.querySelector(item.href)?.scrollIntoView({ behavior: 'smooth' });
+                  const target = item.href; // e.g. "#services"
+                  const el = document.querySelector(target);
+                  if (el) {
+                    // Already on home page — just smooth scroll
+                    el.scrollIntoView({ behavior: 'smooth' });
+                  } else {
+                    // On a different page — navigate home then scroll after mount
+                    sessionStorage.setItem('scrollTarget', target);
+                    window.location.href = '/';
+                  }
                 }}
                 className={`flex flex-col items-center justify-center p-2 rounded-xl transition-colors duration-200 ${
                   isActive

@@ -12,8 +12,21 @@ import FAQ from './components/FAQ'
 import CTABanner from './components/CTABanner'
 import Footer from './components/Footer'
 import BookingPage from './pages/BookingPage'
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
+import CookiePolicy from './pages/CookiePolicy';
 
 function HomePage() {
+  useEffect(() => {
+    const target = sessionStorage.getItem('scrollTarget');
+    if (target) {
+      sessionStorage.removeItem('scrollTarget');
+      setTimeout(() => {
+        document.querySelector(target)?.scrollIntoView({ behavior: 'smooth' });
+      }, 500); // delay allows page and shader to mount
+    }
+  }, []);
+
   return (
     <>
       <Hero />
@@ -51,6 +64,9 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/book" element={<BookingPage />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="/terms" element={<TermsOfService />} />
+        <Route path="/cookies" element={<CookiePolicy />} />
       </Routes>
     </div>
   )
