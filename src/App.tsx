@@ -1,6 +1,7 @@
-import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import './index.css'
 import { Routes, Route } from 'react-router-dom'
+import { motion, useScroll, useTransform } from 'framer-motion'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import Services from './components/Services'
@@ -27,8 +28,24 @@ function HomePage() {
     }
   }, []);
 
+  const { scrollY } = useScroll();
+  const backgroundY = useTransform(scrollY, (val) => val * -0.3);
+
   return (
     <>
+      <motion.div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          height: '140vh',
+          zIndex: -20,
+          background: 'radial-gradient(circle at 50% 30%, #170b24 0%, #0d000d 50%, #000000 100%)',
+          y: backgroundY,
+          pointerEvents: 'none',
+        }}
+      />
       <Hero />
       <Services />
       <Process />
@@ -54,22 +71,50 @@ function App() {
         (btn as HTMLElement).style.setProperty('--y', `${y}%`);
       });
     };
-    window.addEventListener('mousemove', handleMouseMove);
+    if (window.matchMedia('(hover: hover)').matches) {
+      window.addEventListener('mousemove', handleMouseMove);
+    }
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
   return (
-    <div style={{ background: '#000000' }}>
+    <div style={{ background: '#000000', minHeight: '100vh', position: 'relative', overflowX: 'hidden' }}>
       <Navbar />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/book" element={<BookingPage />} />
-        <Route path="/privacy" element={<PrivacyPolicy />} />
-        <Route path="/terms" element={<TermsOfService />} />
-        <Route path="/cookies" element={<CookiePolicy />} />
-      </Routes>
+      <React.Suspense
+        fallback={
+          <div
+            style={{
+              minHeight: '100vh',
+              background: '#000000',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <div
+              style={{
+                width: 40,
+                height: 40,
+                border: '2px solid #2A114B',
+                borderTop: '2px solid #dface8',
+                borderRadius: '50%',
+                animation: 'spin 0.8s linear infinite',
+              }}
+            />
+          </div>
+        }
+      >
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/book" element={<BookingPage />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<TermsOfService />} />
+          <Route path="/cookies" element={<CookiePolicy />} />
+        </Routes>
+      </React.Suspense>
     </div>
   )
 }
 
 export default App
+

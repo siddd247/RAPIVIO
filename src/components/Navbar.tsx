@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Home, User, Briefcase, GitBranch, BookOpen, Mail, ChevronDown } from 'lucide-react';
 
 const NAV_LINKS = [
   { text: 'Home', href: '#hero' },
@@ -12,63 +11,68 @@ const NAV_LINKS = [
   { text: 'Contact', href: '#contact' },
 ];
 
-const ICON_MAP: Record<string, React.ComponentType<any>> = {
-  'Home': Home,
-  'About': User,
-  'Services': Briefcase,
-  'Process': GitBranch,
-  'Case Studies': BookOpen,
-  'Contact': Mail
-};
-
 export default function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [scrollY, setScrollY] = useState(0);
+  const [scrolled, setScrolled] = useState(false);
   const [dockOpen, setDockOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrollY(window.scrollY);
+      setScrolled(window.scrollY >= 40);
     };
+    handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => {
-    const sections = ['hero', 'about', 'services', 'process', 'case-studies', 'contact'];
-    const observerOptions = {
-      root: null,
-      rootMargin: '-30% 0px -50% 0px',
-      threshold: 0.05,
-    };
+    // Only run observer on homepage
+    if (location.pathname !== '/') {
+      setActiveSection('');
+      return;
+    }
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setActiveSection(entry.target.id);
+    let observer: IntersectionObserver | null = null;
+
+    // Small delay to let the page sections mount fully after navigation
+    const timeout = setTimeout(() => {
+      const sections = document.querySelectorAll('section[id]');
+
+      const obs = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              setActiveSection(entry.target.id);
+            }
+          });
+        },
+        {
+          rootMargin: '-30% 0px -60% 0px',
+          threshold: 0,
         }
-      });
-    }, observerOptions);
+      );
 
-    sections.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
+      sections.forEach((section) => obs.observe(section));
+      observer = obs;
+    }, 100);
 
-    return () => observer.disconnect();
-  }, []);
+    return () => {
+      clearTimeout(timeout);
+      if (observer) {
+        observer.disconnect();
+      }
+    };
+  }, [location.pathname]);
 
   useEffect(() => {
-    if (scrollY < 40) {
+    if (!scrolled) {
       setActiveSection('hero');
     }
-  }, [scrollY]);
+  }, [scrolled]);
 
   if (location.pathname === '/book') return null;
-
-  const scrolled = scrollY >= 40;
 
   const navStyle = scrolled
     ? {
@@ -180,67 +184,151 @@ export default function Navbar() {
 
           {/* Mobile Toggle Button */}
           <button
-            className="md:hidden flex items-center justify-center text-[#FFFFFF] hover:opacity-80 p-1"
+            className="md:hidden flex items-center justify-center p-1"
             aria-label="Toggle menu"
             onClick={() => setDockOpen(!dockOpen)}
+            style={{ background: 'none', border: 'none', cursor: 'pointer' }}
           >
-            <ChevronDown
-              size={24}
-              style={{
-                transform: dockOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)',
-              }}
-            />
+            <motion.svg
+              animate={{ rotate: dockOpen ? 180 : 0 }}
+              transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              xmlns="http://www.w3.org/2000/svg"
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#FFFFFF"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <polyline points="6 9 12 15 18 9" />
+            </motion.svg>
           </button>
         </div>
       </header>
 
-      {/* Mobile Floating Dock */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: dockOpen ? 1 : 0 }}
-        transition={{ duration: 0.2, ease: 'easeOut' }}
-        style={{
-          pointerEvents: dockOpen ? 'auto' : 'none',
-        }}
-        className="fixed top-[76px] left-1/2 -translate-x-1/2 w-[92%] max-w-4xl z-40 bg-black/60 border border-[#FFFFFF]/10 backdrop-blur-xl rounded-2xl px-4 py-3 md:hidden"
-      >
-        <div className="grid grid-cols-3 gap-3 text-center">
-          {NAV_LINKS.map((item) => {
-            const IconComponent = ICON_MAP[item.text] || Home;
-            const isActive = activeSection === item.href.replace('#', '');
-            return (
-              <motion.a
-                key={item.text}
-                href={item.href}
-                whileTap={{ scale: 0.88 }}
-                onClick={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                  e.preventDefault();
-                  setDockOpen(false);
-                  const target = item.href; // e.g. "#services"
-                  const el = document.querySelector(target);
-                  if (el) {
-                    // Already on home page — just smooth scroll
-                    el.scrollIntoView({ behavior: 'smooth' });
-                  } else {
-                    // On a different page — navigate home then scroll after mount
-                    sessionStorage.setItem('scrollTarget', target);
-                    window.location.href = '/';
-                  }
-                }}
-                className={`flex flex-col items-center justify-center p-2 rounded-xl transition-colors duration-200 ${
-                  isActive
-                    ? 'text-[#FFFFFF] bg-[#FFFFFF]/15 font-semibold'
-                    : 'text-[rgba(255,255,255,0.6)] opacity-50 hover:opacity-80'
-                }`}
-              >
-                <IconComponent size={20} className="mb-1" />
-                <span className="text-[10px] uppercase tracking-wider">{item.text}</span>
-              </motion.a>
-            );
-          })}
-        </div>
-      </motion.div>
+      <AnimatePresence>
+        {dockOpen && (
+          <motion.div
+            key="mobile-nav-dock"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed inset-0 z-40 md:hidden flex flex-col"
+            style={{
+              background: 'rgba(0, 0, 0, 0.82)',
+              backdropFilter: 'blur(60px) saturate(180%)',
+              WebkitBackdropFilter: 'blur(60px) saturate(180%)',
+            }}
+          >
+            <style>{`@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');`}</style>
+
+            {/* Nav Links */}
+            <div className="flex flex-col justify-center flex-1 gap-6" style={{ paddingLeft: '4.25rem' }}>
+              {NAV_LINKS.map((item, idx) => {
+                const isActive = activeSection === item.href.replace('#', '');
+                return (
+                  <motion.a
+                    key={item.text}
+                    href={item.href}
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: idx * 0.06, duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setDockOpen(false);
+                      const el = document.querySelector(item.href);
+                      if (el) {
+                        el.scrollIntoView({ behavior: 'smooth' });
+                      } else {
+                        sessionStorage.setItem('scrollTarget', item.href);
+                        window.location.href = '/';
+                      }
+                    }}
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = 'translateX(1rem)'; (e.currentTarget as HTMLElement).style.color = '#FFFFFF'; }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = 'translateX(0)'; (e.currentTarget as HTMLElement).style.color = isActive ? '#FFFFFF' : 'rgba(255,255,255,0.45)'; }}
+                    style={{
+                      fontSize: '2.25rem',
+                      fontFamily: "'Instrument Serif', serif",
+                      fontStyle: 'italic',
+                      fontWeight: 400,
+                      color: isActive ? '#FFFFFF' : 'rgba(255,255,255,0.45)',
+                      textDecoration: 'none',
+                      padding: '0.15rem 0',
+                      letterSpacing: '0em',
+                      lineHeight: 1.2,
+                      display: 'block',
+                      transition: 'color 0.2s ease',
+                    }}
+                  >
+                    {item.text}
+                  </motion.a>
+                );
+              })}
+            </div>
+
+            <div style={{ paddingLeft: '4.25rem', paddingRight: '2rem', paddingBottom: '1.5rem' }}>
+              {/* Separator */}
+              <div style={{
+                width: '100%',
+                height: '1px',
+                background: 'rgba(255,255,255,0.1)',
+                marginBottom: '1.75rem',
+              }} />
+
+
+
+              {/* Social icons row */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '1.25rem' }}>
+
+                {/* Instagram — stroke style, pink on hover via state not possible inline, use brand color */}
+                <a href="#" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', color: '#FFFFFF' }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+                  </svg>
+                </a>
+
+                {/* X (Twitter) — fill style */}
+                <a href="#" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', color: '#FFFFFF' }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                  </svg>
+                </a>
+
+                {/* YouTube — fill style */}
+                <a href="#" target="_blank" rel="noopener noreferrer" style={{ display: 'flex', color: '#FFFFFF' }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                  </svg>
+                </a>
+
+                {/* Mail — Lucide style stroke */}
+                <a href="mailto:#" style={{ display: 'flex', color: '#FFFFFF' }}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <rect width="20" height="16" x="2" y="4" rx="2"/>
+                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                  </svg>
+                </a>
+
+              </div>
+
+              {/* Copyright */}
+              <div style={{
+                fontSize: '0.72rem',
+                color: 'rgba(255,255,255,0.3)',
+                letterSpacing: '0.03em',
+              }}>
+                © 2026 Rapivio. All rights reserved.
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

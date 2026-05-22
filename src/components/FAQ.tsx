@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
+import { RevealWrapper } from './ui/RevealWrapper';
+import { AmbientLight } from './ui/AmbientLight';
 
 interface FAQItem {
   question: string;
@@ -48,99 +50,104 @@ export default function FAQ() {
         padding: '7rem 1.5rem',
         width: '100%',
         position: 'relative',
+        overflow: 'visible',
       }}
     >
-      <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
+      <AmbientLight color="rgb(223, 172, 232)" opacity={0.9} />
+      <div style={{ maxWidth: '1280px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
         {/* Header */}
-        <div style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto', marginBottom: '4rem' }}>
-          <p
-            style={{
-              color: '#dface8',
-              fontSize: '1.13rem',
-              letterSpacing: '0.2em',
-              fontWeight: 600,
-              textTransform: 'uppercase',
-              marginBottom: '1rem',
-            }}
-          >
-            FAQ
-          </p>
-          <h2
-            style={{
-              color: '#FFFFFF',
-              fontWeight: 800,
-              fontSize: 'clamp(2.5rem, 5vw, 3.5rem)',
-              lineHeight: 1.15,
-            }}
-          >
-            Questions we hear
-            <br />
-            all the time.
-          </h2>
-        </div>
+        <RevealWrapper variant="fade-left">
+          <div style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto', marginBottom: '4rem' }}>
+            <p
+              style={{
+                color: '#dface8',
+                fontSize: '1.13rem',
+                letterSpacing: '0.2em',
+                fontWeight: 600,
+                textTransform: 'uppercase',
+                marginBottom: '1rem',
+              }}
+            >
+              FAQ
+            </p>
+            <h2
+              style={{
+                color: '#FFFFFF',
+                fontWeight: 800,
+                fontSize: 'clamp(2.5rem, 5vw, 3.5rem)',
+                lineHeight: 1.15,
+              }}
+            >
+              Questions we hear
+              <br />
+              all the time.
+            </h2>
+          </div>
+        </RevealWrapper>
 
         {/* Accordion list */}
         <div style={{ maxWidth: '48rem', margin: '0 auto' }}>
           {FAQS.map((faq, idx) => {
             const isOpen = openIndex === idx;
             return (
-              <div
-                key={idx}
-                onClick={() => toggle(idx)}
-                style={{
-                  borderBottom: '1px solid #2A114B',
-                  padding: '1.25rem 0',
-                  cursor: 'pointer',
-                }}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <h3 style={{ color: '#FFFFFF', fontWeight: 500, fontSize: '1rem', margin: 0 }}>
-                    {faq.question}
-                  </h3>
-                  <ChevronDown
-                    size={20}
-                    color="#dface8"
-                    style={{
-                      transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                      transition: 'transform 260ms cubic-bezier(0.4, 0, 0.2, 1)',
-                      flexShrink: 0,
-                    }}
-                  />
-                </div>
-
-                {/* Liquid expand wrapper */}
+              <RevealWrapper key={idx} variant="slide-up-stagger" delay={idx * 0.07}>
                 <div
+                  onClick={() => toggle(idx)}
                   style={{
-                    display: 'grid',
-                    gridTemplateRows: isOpen ? '1fr' : '0fr',
-                    transition: 'grid-template-rows 260ms cubic-bezier(0.4, 0, 0.2, 1)',
+                    borderBottom: '1px solid #2A114B',
+                    padding: '1.25rem 0',
+                    cursor: 'pointer',
                   }}
                 >
-                  <div style={{ overflow: 'hidden' }}>
-                    <div
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <h3 style={{ color: '#FFFFFF', fontWeight: 500, fontSize: '1rem', margin: 0 }}>
+                      {faq.question}
+                    </h3>
+                    <ChevronDown
+                      size={20}
+                      color="#dface8"
                       style={{
-                        opacity: isOpen ? 1 : 0,
-                        transform: isOpen ? 'translateY(0px)' : 'translateY(-6px)',
-                        transition: isOpen
-                          ? 'opacity 220ms ease 60ms, transform 220ms ease 60ms'
-                          : 'opacity 150ms ease, transform 150ms ease',
+                        transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                        transition: 'transform 260ms cubic-bezier(0.4, 0, 0.2, 1)',
+                        flexShrink: 0,
                       }}
-                    >
-                      <p
+                    />
+                  </div>
+
+                  {/* Liquid expand wrapper */}
+                  <div
+                    style={{
+                      display: 'grid',
+                      gridTemplateRows: isOpen ? '1fr' : '0fr',
+                      transition: 'grid-template-rows 260ms cubic-bezier(0.4, 0, 0.2, 1)',
+                    }}
+                  >
+                    <div style={{ overflow: 'hidden' }}>
+                      <div
                         style={{
-                          color: '#AAAAAA',
-                          fontSize: '0.875rem',
-                          lineHeight: 1.7,
-                          marginTop: '0.75rem',
-                          marginBottom: 0,
+                          opacity: isOpen ? 1 : 0,
+                          transform: isOpen ? 'translateY(0px)' : 'translateY(-6px)',
+                          transition: isOpen
+                            ? 'opacity 220ms ease 60ms, transform 220ms ease 60ms'
+                            : 'opacity 150ms ease, transform 150ms ease',
                         }}
                       >
-                        {faq.answer}
-                      </p>
+                        <p
+                          style={{
+                            color: '#AAAAAA',
+                            fontSize: '0.875rem',
+                            lineHeight: 1.7,
+                            marginTop: '0.75rem',
+                            marginBottom: 0,
+                          }}
+                        >
+                          {faq.answer}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </RevealWrapper>
             );
           })}
         </div>

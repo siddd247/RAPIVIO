@@ -1,4 +1,6 @@
 import { Link } from 'react-router-dom';
+import { RevealWrapper } from './ui/RevealWrapper';
+import { AmbientLight } from './ui/AmbientLight';
 
 export default function CTABanner() {
   return (
@@ -10,8 +12,10 @@ export default function CTABanner() {
         padding: '7rem 1.5rem',
         width: '100%',
         position: 'relative',
+        overflow: 'visible',
       }}
     >
+      <AmbientLight color="rgb(223, 172, 232)" opacity={0.9} />
       <div
         style={{
           textAlign: 'center',
@@ -20,48 +24,62 @@ export default function CTABanner() {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
+          position: 'relative',
+          zIndex: 1,
         }}
       >
-        <h2
-          className="font-extrabold md:text-6xl"
+        <RevealWrapper
+          variant="scale-in"
+          delay={0.1}
           style={{
-            color: '#FFFFFF',
-            fontSize: '2.5rem', // fallback for non-md (4xl)
-            lineHeight: 1.15,
-            maxWidth: '48rem',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
           }}
         >
-          Let AI do the work<br />so you can <span style={{ color: '#dface8' }}>scale faster.</span>
-        </h2>
+          <h2
+            className="font-extrabold md:text-6xl"
+            style={{
+              color: '#FFFFFF',
+              fontSize: '2.5rem', // fallback for non-md (4xl)
+              lineHeight: 1.15,
+              maxWidth: '48rem',
+            }}
+          >
+            Let AI do the work<br />so you can <span style={{ color: '#dface8' }}>scale faster.</span>
+          </h2>
 
-        <p
-          className="text-base"
-          style={{
-            color: '#AAAAAA',
-            marginTop: '1rem',
-            maxWidth: '36rem',
-            lineHeight: 1.6,
-          }}
-        >
-          Book a free 30-minute strategy call. No pitch, no pressure — just
-          clarity.
-        </p>
+          <p
+            className="text-base"
+            style={{
+              color: '#AAAAAA',
+              marginTop: '1rem',
+              maxWidth: '36rem',
+              lineHeight: 1.6,
+            }}
+          >
+            Book a free 30-minute strategy call. No pitch, no pressure — just
+            clarity.
+          </p>
 
-        <Link
-          to="/book"
-          className="btn-primary"
-          style={{
-            marginTop: '2rem',
-            textDecoration: 'none',
-          }}
-        >
-          <span className="btn-text">
-            <span className="btn-label">Book a Free Call</span>
-            <span className="btn-icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/></svg>
-            </span>
-          </span>
-        </Link>
+          <RevealWrapper variant="fade-up" delay={0.25}>
+            <Link
+              to="/book"
+              className="btn-primary"
+              style={{
+                marginTop: '2rem',
+                textDecoration: 'none',
+              }}
+            >
+              <span className="btn-text">
+                <span className="btn-label">Book a Free Call</span>
+                <span className="btn-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/></svg>
+                </span>
+              </span>
+            </Link>
+          </RevealWrapper>
+        </RevealWrapper>
       </div>
     </section>
   );

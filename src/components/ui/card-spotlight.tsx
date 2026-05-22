@@ -1,14 +1,18 @@
 "use client";
 
 import { useMotionValue, motion, useMotionTemplate } from "framer-motion";
-import React, { type MouseEvent as ReactMouseEvent, useState } from "react";
-import { CanvasRevealEffect } from "@/components/ui/canvas-reveal-effect";
+import React, { type MouseEvent as ReactMouseEvent, useState, Suspense, lazy } from "react";
+const CanvasRevealEffect = lazy(() =>
+  import("@/components/ui/canvas-reveal-effect").then((m) => ({
+    default: m.CanvasRevealEffect,
+  }))
+);
 import { cn } from "@/lib/utils";
 
 export const CardSpotlight = ({
   children,
   radius = 350,
-  color = "#262626",
+  color = "#dface8",
   className,
   ...props
 }: {
@@ -57,18 +61,22 @@ export const CardSpotlight = ({
         }}
       >
         {isHovering && (
-          <CanvasRevealEffect
-            animationSpeed={5}
-            containerClassName="bg-transparent absolute inset-0 pointer-events-none"
-            colors={[
-              [59, 130, 246],
-              [139, 92, 246],
-            ]}
-            dotSize={3}
-          />
+          <Suspense fallback={null}>
+            <CanvasRevealEffect
+              animationSpeed={5}
+              containerClassName="bg-transparent absolute inset-0 pointer-events-none"
+              colors={[
+                [223, 172, 232], // #dfacE8 in RGB
+                [180, 120, 200], // a slightly deeper complementary purple
+              ]}
+              dotSize={3}
+            />
+          </Suspense>
         )}
       </motion.div>
-      {children}
+      <div className="relative z-20 h-full flex flex-col flex-1">
+        {children}
+      </div>
     </div>
   );
 };

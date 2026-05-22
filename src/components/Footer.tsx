@@ -17,28 +17,27 @@ const YoutubeIcon = ({ color, style }: { color?: string; style?: React.CSSProper
 function SocialButton({
   icon: Icon,
   href,
-  hoverColor,
 }: {
   icon: any;
   href: string;
-  hoverColor: string;
 }) {
-  const [hovered, setHovered] = useState(false);
   return (
     <a
       href={href}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      className="w-10 h-10 rounded-full border border-[#522959] flex items-center justify-center transition-all duration-300"
+      target="_blank"
+      rel="noopener noreferrer"
       style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
         textDecoration: 'none',
+        color: '#FFFFFF',
+        transition: 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
       }}
+      onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(1.3)'; }}
+      onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.transform = 'scale(1)'; }}
     >
-      <Icon
-        size={18}
-        color={hovered ? hoverColor : '#FFFFFF'}
-        style={{ transition: 'color 300ms' }}
-      />
+      <Icon size={26} color="#FFFFFF" />
     </a>
   );
 }
@@ -51,7 +50,13 @@ function FooterLink({ text, href }: { text: string; href: string }) {
       onClick={(e) => {
         if (href.startsWith('#')) {
           e.preventDefault();
-          document.querySelector(href)?.scrollIntoView({ behavior: 'smooth' });
+          const el = document.querySelector(href);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth' });
+          } else {
+            sessionStorage.setItem('scrollTarget', href);
+            window.location.href = '/';
+          }
         }
       }}
       onMouseEnter={() => setHovered(true)}
@@ -113,11 +118,11 @@ export default function Footer() {
             <p style={{ color: '#AAAAAA', fontSize: '0.875rem', marginTop: '0.5rem', lineHeight: 1.7 }}>
               AI automation for service businesses that want to grow.
             </p>
-            <div style={{ display: 'flex', gap: '0.75rem', marginTop: '1.25rem', alignItems: 'center' }}>
-              <SocialButton icon={InstagramIcon} href="#" hoverColor="#E1306C" />
-              <SocialButton icon={TwitterIcon} href="#" hoverColor="#1DA1F2" />
-              <SocialButton icon={YoutubeIcon} href="#" hoverColor="#FF0000" />
-              <SocialButton icon={Mail} href="#" hoverColor="#824D69" />
+            <div style={{ display: 'flex', gap: '1.5rem', marginTop: '1.25rem', alignItems: 'center' }}>
+              <SocialButton icon={InstagramIcon} href="#" />
+              <SocialButton icon={TwitterIcon} href="#" />
+              <SocialButton icon={YoutubeIcon} href="#" />
+              <SocialButton icon={Mail} href="#" />
             </div>
           </div>
 

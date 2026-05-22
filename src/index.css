@@ -138,12 +138,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.mauve-gradient-border {
-  background: linear-gradient(#000, #000) padding-box,
-              linear-gradient(135deg, #dface8, #2A114B) border-box;
-  border: 1.5px solid transparent;
-}
-
 .section-fade-bottom::after {
   content: '';
   position: absolute;
@@ -230,4 +224,49 @@ body {
   transform: translateX(0);
   opacity: 1;
   width: auto;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes borderBeam {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.service-card-beam {
+  position: relative;
+}
+
+.service-card-beam::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    120deg,
+    transparent 20%,
+    rgba(223, 172, 232, 0.6) 40%,
+    rgba(130, 77, 105, 0.8) 50%,
+    rgba(223, 172, 232, 0.6) 60%,
+    transparent 80%
+  );
+  background-size: 300% 300%;
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.service-card-beam:hover::before {
+  opacity: 1;
+  animation: borderBeam 2.5s ease infinite;
 }
