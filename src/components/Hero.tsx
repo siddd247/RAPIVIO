@@ -1,45 +1,10 @@
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { useEffect, useState, type ComponentType } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { FlipWords } from './ui/flip-words';
 import { Link } from 'react-router-dom';
 import { RevealWrapper } from './ui/RevealWrapper';
 import { useParallax } from '../hooks/useScrollAnimation';
 import { motion } from 'framer-motion';
-
-const ShaderBackground = lazy(() =>
-  import('shaders/react').then(({ Shader, Swirl, ChromaFlow, FlutedGlass }) => ({
-    default: () => (
-      <Shader style={{ width: '100%', height: '100%' }} disableTelemetry>
-        <Swirl
-          colorA="#111111"
-          colorB="#000000"
-          detail={1.7}
-        />
-        <ChromaFlow
-          baseColor="#111111"
-          downColor="#522959"
-          leftColor="#2A114B"
-          rightColor="#522959"
-          upColor="#2A114B"
-          momentum={13}
-          radius={3.5}
-        />
-        <FlutedGlass
-          aberration={0.61}
-          angle={31}
-          frequency={8}
-          highlight={0.12}
-          highlightSoftness={0}
-          lightAngle={-90}
-          refraction={4}
-          shape="rounded"
-          softness={1}
-          speed={0.15}
-        />
-      </Shader>
-    )
-  }))
-);
 
 function useWindowSize() {
   const [width, setWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
@@ -56,6 +21,46 @@ export default function Hero() {
   const width = useWindowSize();
   const isMobile = width < 768;
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const [ShaderBackground, setShaderBackground] = useState<ComponentType | null>(null);
+
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+    const timer = setTimeout(() => {
+      import('shaders/react').then(({ Shader, Swirl, ChromaFlow, FlutedGlass }) => {
+        setShaderBackground(() => () => (
+          <Shader style={{ width: '100%', height: '100%' }} disableTelemetry>
+            <Swirl
+              colorA="#111111"
+              colorB="#000000"
+              detail={1.7}
+            />
+            <ChromaFlow
+              baseColor="#111111"
+              downColor="#522959"
+              leftColor="#2A114B"
+              rightColor="#522959"
+              upColor="#2A114B"
+              momentum={13}
+              radius={3.5}
+            />
+            <FlutedGlass
+              aberration={0.61}
+              angle={31}
+              frequency={8}
+              highlight={0.12}
+              highlightSoftness={0}
+              lightAngle={-90}
+              refraction={4}
+              shape="rounded"
+              softness={1}
+              speed={0.15}
+            />
+          </Shader>
+        ));
+      });
+    }, 2000); // load shader after 2s so page content renders first
+    return () => clearTimeout(timer);
+  }, [prefersReducedMotion]);
 
   useEffect(() => {
     // ─── 1. Override document.hidden to always return false ───────────────
@@ -124,20 +129,16 @@ export default function Hero() {
           y: parallaxY,
         }}
       >
-        {!prefersReducedMotion && (
-          <Suspense fallback={null}>
-            <ShaderBackground />
-          </Suspense>
-        )}
+        {ShaderBackground && <ShaderBackground />}
       </motion.div>
 
       {/* ─── Content layer ─── */}
       <div
         className="relative flex flex-col items-center text-center px-6 w-full hero-content"
-        style={{ 
-          zIndex: 20, 
-          minHeight: '100vh', 
-          paddingTop: isMobile ? '0px' : 'clamp(100px, 20vw, 160px)', 
+        style={{
+          zIndex: 20,
+          minHeight: '100vh',
+          paddingTop: isMobile ? '0px' : 'clamp(100px, 20vw, 160px)',
           paddingBottom: isMobile ? '0px' : '80px',
           justifyContent: isMobile ? 'center' : 'flex-start',
           display: 'flex',
