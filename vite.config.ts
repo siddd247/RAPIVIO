@@ -13,7 +13,7 @@ export default defineConfig({
   build: {
     chunkSizeWarningLimit: 2000,
     minify: 'oxc',
-    target: 'esnext',
+    target: 'es2019',
     rollupOptions: {
       output: {
         manualChunks(id) {

@@ -61,14 +61,14 @@ function HomePage() {
 
 function App() {
   useEffect(() => {
+    const btns = Array.from(
+      document.querySelectorAll('.btn-primary, .btn-outline')
+    ) as HTMLElement[];
     const handleMouseMove = (e: MouseEvent) => {
-      const btns = document.querySelectorAll('.btn-primary, .btn-outline');
       btns.forEach((btn) => {
-        const rect = (btn as HTMLElement).getBoundingClientRect();
-        const x = ((e.clientX - rect.left) / rect.width) * 100;
-        const y = ((e.clientY - rect.top) / rect.height) * 100;
-        (btn as HTMLElement).style.setProperty('--x', `${x}%`);
-        (btn as HTMLElement).style.setProperty('--y', `${y}%`);
+        const rect = btn.getBoundingClientRect();
+        btn.style.setProperty('--x', `${((e.clientX - rect.left) / rect.width) * 100}%`);
+        btn.style.setProperty('--y', `${((e.clientY - rect.top) / rect.height) * 100}%`);
       });
     };
     if (window.matchMedia('(hover: hover)').matches) {

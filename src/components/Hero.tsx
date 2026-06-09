@@ -20,11 +20,11 @@ export default function Hero() {
   const { ref: parallaxRef, y: parallaxY } = useParallax(20);
   const width = useWindowSize();
   const isMobile = width < 768;
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
   const [ShaderBackground, setShaderBackground] = useState<ComponentType | null>(null);
 
   useEffect(() => {
-    if (prefersReducedMotion) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || isIOS) return;
     const timer = setTimeout(() => {
       import('shaders/react').then(({ Shader, Swirl, ChromaFlow, FlutedGlass }) => {
         setShaderBackground(() => () => (
@@ -58,22 +58,12 @@ export default function Hero() {
           </Shader>
         ));
       });
-    }, 2000); // load shader after 2s so page content renders first
+    }, 3000); // load shader after 3s so page content renders first
     return () => clearTimeout(timer);
-  }, [prefersReducedMotion]);
+  }, [isIOS]);
 
   useEffect(() => {
-    // ─── 1. Override document.hidden to always return false ───────────────
-    try {
-      Object.defineProperty(document, 'hidden', {
-        get: () => false,
-        configurable: true,
-      });
-    } catch {
-      // Already non-configurable — ignore
-    }
-
-    // ─── 2. Intercept window blur: immediately refocus the window ─────────
+    // ─── 1. Intercept window blur: immediately refocus the window ─────────
     const handleBlur = () => {
       // Re-dispatch focus so the shader's IntersectionObserver doesn't flip isVisible
       window.dispatchEvent(new Event('focus'));
@@ -88,7 +78,7 @@ export default function Hero() {
     };
     window.addEventListener('blur', handleBlur);
 
-    // ─── 3. After mailto click: force canvas focus to resume render loop ──
+    // ─── 2. After mailto click: force canvas focus to resume render loop ──
     const handleMailtoClick = () => {
       setTimeout(() => {
         const canvas = document.querySelector('canvas');
@@ -129,7 +119,16 @@ export default function Hero() {
           y: parallaxY,
         }}
       >
-        {ShaderBackground && <ShaderBackground />}
+        {!isIOS && ShaderBackground && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1.2, ease: 'easeInOut' }}
+            style={{ width: '100%', height: '100%' }}
+          >
+            <ShaderBackground />
+          </motion.div>
+        )}
       </motion.div>
 
       {/* ─── Content layer ─── */}
